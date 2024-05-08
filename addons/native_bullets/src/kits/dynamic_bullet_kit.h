@@ -23,6 +23,10 @@ public:
 		starting_transform = transform;
 		this->transform = transform;
 	}
+	void set_transform_only(Transform2D transform) {
+		this->transform = transform;
+	}
+
 
 	Transform2D get_starting_transform() { return starting_transform; }
 	void set_starting_transform(Transform2D transform) {
@@ -164,7 +168,7 @@ class DynamicBulletsPool : public AbstractBulletsPool<DynamicBulletKit, DynamicB
 		bullet_transform.set_origin(bullet_transform.get_origin() + bullet->get_velocity() * delta);
 
 		if(!active_rect.has_point(bullet_transform.get_origin())) {
-			bullet->set_transform(bullet_transform);
+			bullet->set_transform_only(bullet_transform);
 			// Return true if the bullet should be deleted.
 			return true;
 		}
@@ -174,7 +178,7 @@ class DynamicBulletsPool : public AbstractBulletsPool<DynamicBulletKit, DynamicB
 		}
 		// Bullet is still alive, increase its lifetime.
 		bullet->add_lifetime(delta);
-		bullet->set_transform(bullet_transform);
+		bullet->set_transform_only(bullet_transform);
 		// Return false if the bullet should not be deleted yet.
 		return false;
 	}
